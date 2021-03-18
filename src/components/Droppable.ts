@@ -1,12 +1,12 @@
 import { IntersectedRect } from '../interfaces/Droppable';
 import ColorUtil from '../color-util';
 
-export default class Droppable {
+class Droppable {
   private element: HTMLElement;
   private intersectedElement: HTMLElement;
 
   private _intersectedColor: string = ColorUtil.defaultColor;
-
+  
   constructor(element: HTMLElement | string) {
     if (typeof element === 'string') {
       this.element = document.getElementById(element);
@@ -27,7 +27,7 @@ export default class Droppable {
   }
 
   public set intersectedColor(colorValue: string) {
-    if (!ColorUtil.isValidColor(colorValue)) {
+    if (!ColorUtil.isValid(colorValue)) {
       return;
     }
 
@@ -50,7 +50,7 @@ export default class Droppable {
   }
   
   /**
-   * 두 element가 충돌하는지 검사
+   * 두 사각형이(Element Rect) 충돌하는지 검사
    *
    * - left   : dropRect.left < dropRect.width + dragRect.left) &&
    * - right  : dropRect.left + dropRect.width > dragRect.left &&
@@ -91,7 +91,7 @@ export default class Droppable {
 
     // 2. 충돌 판정 통과하면, 겹치는 부분 구해서 가시화
     const intersectedRect = this.getIntersectedArea(dragElement, dropElement);
-    this.drawIntersectedArea(intersectedRect);
+    this.showIntersectedArea(intersectedRect);
 
     // 3. 전체 면적에서 겹치는 면적이 tolerance 보다 큰지 여부 검사
     const intersectedArea: number = intersectedRect.width * intersectedRect.height;
@@ -115,13 +115,14 @@ export default class Droppable {
     return intersectedRect;
   }
 
-  private drawIntersectedArea(intersectedRect: IntersectedRect): void {
+  private showIntersectedArea(intersectedRect: IntersectedRect): void {
     const left: number = intersectedRect.x + window.scrollX;
     const top: number = intersectedRect.y + window.scrollY;
 
     this.intersectedElement.style.width = `${intersectedRect.width}px`;
     this.intersectedElement.style.height = `${intersectedRect.height}px`;
     this.intersectedElement.style.transform = `translateX(${left}px) translateY(${top}px)`;
+    this.intersectedElement.style.background = this.intersectedColor;
 
     if (this.intersectedElement.hidden) {
       this.intersectedElement.hidden = false;
@@ -134,15 +135,9 @@ export default class Droppable {
     return this.isIntersectElement(draggableElemt, this.element, tolerance);
   }
 
-  public addClass(className: string): void {
-    if (!this.element.classList.contains(className)) {
-      this.element.classList.add(className);
-    }
-  }
-
-  public removeClass(className: string): void {
-    if (this.element.classList.contains(className)) {
-      this.element.classList.remove(className);
-    }
+  public setBackgroundColor(color: string = null): void {
+    this.element.style.backgroundColor = color;
   }
 }
+
+export default Droppable;

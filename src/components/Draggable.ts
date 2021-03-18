@@ -18,14 +18,12 @@ class EventEmitter {
     (this.events[name]).push(callback);
   }
 
-  public emit(name: string, ...args: any[]): void {
+  protected emit(name: string, ...args: any[]): void {
     this.events[name].forEach((fn) => fn(...args));
   }
-
-  // @TODO once, off, removeListener
 }
 
-export default class Draggable extends EventEmitter {
+class Draggable extends EventEmitter {
   private element: HTMLElement;
   private offsetX: number;
   private offsetY: number;
@@ -56,7 +54,7 @@ export default class Draggable extends EventEmitter {
     document.addEventListener(MouseEventType.Up, this.handleMouseUp);
 
     this.updateElementOffset(event);
-    this.updateElementPosition(this.element, event);
+    this.updateElementPosition(event);
 
     this.emit(DraggableEventType.DragStart, this.element, event);
   }
@@ -68,17 +66,17 @@ export default class Draggable extends EventEmitter {
     this.offsetY = event.clientY - top;
   }
 
-  private updateElementPosition(element: HTMLElement, event: MouseEvent): void {
-    if (element.hidden === true) {
-      element.hidden = false;
+  private updateElementPosition(event: MouseEvent): void {
+    if (this.element.hidden === true) {
+      this.element.hidden = false;
     }
 
-    element.style.left = `${event.pageX - this.offsetX}px`;
-    element.style.top = `${event.pageY - this.offsetY}px`;
+    this.element.style.left = `${event.pageX - this.offsetX}px`;
+    this.element.style.top = `${event.pageY - this.offsetY}px`;
   }
 
   private handleMouseMove(event: MouseEvent): void {
-    this.updateElementPosition(this.element, event);
+    this.updateElementPosition(event);
 
     this.emit(DraggableEventType.Drag, this.element, event);
   }
@@ -90,3 +88,5 @@ export default class Draggable extends EventEmitter {
     this.emit(DraggableEventType.DragEnd, this.element, event);
   }
 }
+
+export default Draggable;

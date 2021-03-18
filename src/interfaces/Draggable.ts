@@ -9,3 +9,7 @@ export enum DraggableEventType {
   Drag = 'draggable:drag',
   DragEnd = 'draggable:dragEnd'
 }
+export interface Offset {
+	x: number;
+	y: number;
+}
