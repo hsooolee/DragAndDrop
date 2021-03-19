@@ -3,7 +3,7 @@ import { IntersectedRect } from '../../interfaces/Droppable';
 
 abstract class AbstractDroppable {
   protected element: HTMLElement;
-  protected intersectedElement: HTMLElement;
+  private intersectedElement: HTMLElement;
 
   private _intersectedColor: string = ColorUtil.defaultColor;
   
@@ -34,7 +34,7 @@ abstract class AbstractDroppable {
     this._intersectedColor = colorValue;
   }
 
-  protected showIntersectedArea(intersectedRect: IntersectedRect): void {
+  protected drawIntersectedArea(intersectedRect: IntersectedRect): void {
     const left: number = intersectedRect.x + window.scrollX;
     const top: number = intersectedRect.y + window.scrollY;
 
@@ -62,7 +62,7 @@ abstract class AbstractDroppable {
     return intersectedRect;
   }
 
-  protected createIntersectedElement(): void {
+  private createIntersectedElement(): void {
     if (this.intersectedElement) {
       return;
     }
@@ -112,7 +112,7 @@ abstract class AbstractDroppable {
 
 	// 2. 두 사각형이 겹치면, 겹치는 영역을 그린다.
 	const intersectedRect = this.getIntersectedArea(draggableElemt, this.element);
-	this.showIntersectedArea(intersectedRect);    
+	this.drawIntersectedArea(intersectedRect);    
   
 	// 3. 드랍 여부는 각 로직에서 판단한다.
 	return this.isIntersectElement(draggableElemt, event, tolerance);
