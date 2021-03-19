@@ -14,3 +14,6 @@
 	- 이후 ts 코드 수정 시 자동 빌드되어, 결과에 반영
 - 확인하기
 	- 브라우저에서 localhost:9000 접속
+
+#### 미리보기
+https://github.com/hsooolee/DragAndDrop/blob/master/assets/demo.gif
