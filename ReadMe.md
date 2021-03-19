@@ -16,4 +16,4 @@
 	- 브라우저에서 localhost:9000 접속
 
 #### 미리보기
-https://github.com/hsooolee/DragAndDrop/blob/master/assets/demo.gif
+![Image](https://github.com/hsooolee/DragAndDrop/blob/master/assets/demo.gif)
