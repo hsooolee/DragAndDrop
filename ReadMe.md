@@ -10,7 +10,7 @@
 - 설치하기
 	- `npm install` 명령어 실행
 - 실행하기(webpack-dev-server로 구동)
-	- `npm start` 명령어 실행
+	- `npm run start` 명령어 실행
 	- 이후 ts 코드 수정 시 자동 빌드되어, 결과에 반영
 - 확인하기
 	- 브라우저에서 localhost:9000 접속

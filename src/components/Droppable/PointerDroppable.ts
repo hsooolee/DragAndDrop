@@ -5,7 +5,7 @@ class PointerDroppable extends AbstractDroppable {
     super(element);
   }
   
-  public isIntersectElement(dragElement: HTMLElement,  event: MouseEvent, tolerance: number): boolean {
+  public isDropElement(dragElement: HTMLElement,  event: MouseEvent, tolerance: number): boolean {
     const {
       left: dropRectLeft,
       right: dropRectRight,
@@ -13,6 +13,7 @@ class PointerDroppable extends AbstractDroppable {
       top: dropRectTop
     }: ClientRect = this.element.getBoundingClientRect();
 
+    // 마우스 포인터가 droppable 영역에 포함되는지 여부 검사
     if (!(dropRectLeft <= event.pageX + tolerance&& event.pageX <= dropRectRight + tolerance)) {
       return false;
     }

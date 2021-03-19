@@ -34,6 +34,21 @@ abstract class AbstractDroppable {
     this._intersectedColor = colorValue;
   }
 
+  private createIntersectedElement(): void {
+    if (this.intersectedElement) {
+      return;
+    }
+
+    this.intersectedElement = document.createElement('div');
+    this.intersectedElement.style.position = 'absolute';
+    this.intersectedElement.style.left = '0px';
+    this.intersectedElement.style.top = '0px';
+    this.intersectedElement.style.background = this.intersectedColor;
+    this.intersectedElement.hidden = true;
+
+    document.body.appendChild(this.intersectedElement);
+  }
+
   protected drawIntersectedArea(intersectedRect: IntersectedRect): void {
     const left: number = intersectedRect.x + window.scrollX;
     const top: number = intersectedRect.y + window.scrollY;
@@ -62,67 +77,52 @@ abstract class AbstractDroppable {
     return intersectedRect;
   }
 
-  private createIntersectedElement(): void {
-    if (this.intersectedElement) {
-      return;
+  public isDrop(draggableElemt: HTMLElement, event: MouseEvent, tolerance: number): boolean {
+    this.intersectedElement.hidden = true;
+
+    const {
+      left: dragRectLeft,
+      top: dragRectTop,
+      height: dragRectHeight
+    }: ClientRect = draggableElemt.getBoundingClientRect();
+
+    const {
+      left: dropRectLeft,
+      top: dropRectTop,
+      width: dropRectWidth,
+      height: dropRectHeigth
+    }: ClientRect = this.element.getBoundingClientRect();
+    
+    // 1. 두 사각형이 겹치는지 여부 판단
+    if (!(dropRectLeft < (dragRectLeft + dropRectWidth))) {
+      return false;
     }
 
-    this.intersectedElement = document.createElement('div');
-    this.intersectedElement.style.position = 'absolute';
-    this.intersectedElement.style.left = '0px';
-    this.intersectedElement.style.top = '0px';
-    this.intersectedElement.style.background = this.intersectedColor;
-    this.intersectedElement.hidden = true;
+    if (!((dropRectLeft + dropRectWidth) > dragRectLeft)) {
+      return false;
+    }
 
-    document.body.appendChild(this.intersectedElement);
-  }
+    if (!(dragRectTop < (dropRectTop + dropRectHeigth))) {
+      return false;
+    }
 
-  public isIntersect(draggableElemt: HTMLElement, event: MouseEvent, tolerance: number): boolean {
-    this.intersectedElement.hidden = true;
+    if (!((dragRectTop + dragRectHeight) > dropRectTop)) {
+      return false;
+    }
 
-	const {
-	  left: dragRectLeft,
-	  top: dragRectTop,
-	  height: dragRectHeight
-	}: ClientRect = draggableElemt.getBoundingClientRect();
-
-	const {
-	  left: dropRectLeft,
-	  top: dropRectTop,
-	  width: dropRectWidth,
-	  height: dropRectHeigth
-	}: ClientRect = this.element.getBoundingClientRect();
-  
-	// 1. 두 사각형이 겹치는지 여부 판단
-	if (!(dropRectLeft < (dragRectLeft + dropRectWidth))) {
-	  return false;
-	}
-
-	if (!((dropRectLeft + dropRectWidth) > dragRectLeft)) {
-	  return false;
-	}
-
-	if (!(dragRectTop < (dropRectTop + dropRectHeigth))) {
-	  return false;
-	}
-
-	if (!((dragRectTop + dragRectHeight) > dropRectTop)) {
-	  return false;
-	}
-
-	// 2. 두 사각형이 겹치면, 겹치는 영역을 그린다.
-	const intersectedRect = this.getIntersectedArea(draggableElemt, this.element);
-	this.drawIntersectedArea(intersectedRect);    
-  
-	// 3. 드랍 여부는 각 로직에서 판단한다.
-	return this.isIntersectElement(draggableElemt, event, tolerance);
+    // 2. 두 사각형이 겹치면, 겹치는 영역을 그린다.
+    const intersectedRect = this.getIntersectedArea(draggableElemt, this.element);
+    this.drawIntersectedArea(intersectedRect);    
+    
+    // 3. 드랍 여부는 각 로직에서 판단한다.
+    return this.isDropElement(draggableElemt, event, tolerance);
   }
 
   public setBackgroundColor(color: string = null): void {
     this.element.style.backgroundColor = color;
   }
 
-  public abstract isIntersectElement(draggableElemt: HTMLElement, event: MouseEvent, tolerance: number): boolean;
+  public abstract isDropElement(draggableElemt: HTMLElement, event: MouseEvent, tolerance: number): boolean;
 }
 
 export default AbstractDroppable;

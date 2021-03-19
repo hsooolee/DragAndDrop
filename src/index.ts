@@ -7,7 +7,7 @@ import { DraggableEventType } from './interfaces/Draggable';
 
 
 function handleDrag(droppable: AbstractDroppable, draggableElement: HTMLElement, event: MouseEvent): void {
-  if (droppable.isIntersect(draggableElement, event, 10)) {
+  if (droppable.isDrop(draggableElement, event, 10)) {
     droppable.setBackgroundColor('yellow');
   } else {
     droppable.setBackgroundColor();
@@ -15,7 +15,7 @@ function handleDrag(droppable: AbstractDroppable, draggableElement: HTMLElement,
 }
 
 function handleDragEnd(droppable: AbstractDroppable, draggableElement: HTMLElement, event: MouseEvent): void {
-  if (droppable.isIntersect(draggableElement, event, 10)) {
+  if (droppable.isDrop(draggableElement, event, 10)) {
     alert('area dropped');
   }
 }

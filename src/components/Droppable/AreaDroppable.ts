@@ -5,13 +5,13 @@ class AreaDroppable extends AbstractDroppable {
     super(element);
   }
   
-  public isIntersectElement(dragElement: HTMLElement, event: MouseEvent, tolerance: number): boolean {
+  public isDropElement(dragElement: HTMLElement, event: MouseEvent, tolerance: number): boolean {
     const {
       width: dragRectWidth,
       height: dragRectHeight
-      }: ClientRect = dragElement.getBoundingClientRect();
+    }: ClientRect = dragElement.getBoundingClientRect();
 
-    // 3. 전체 면적에서 겹치는 면적이 tolerance 보다 큰지 여부 검사
+    // droppable 전체 면적에서 겹치는 면적 비율이 tolerance 보다 큰지 여부 검사
     const intersectedRect = this.getIntersectedArea(dragElement, this.element);
     const intersectedArea: number = intersectedRect.width * intersectedRect.height;
     const draggableArea: number = dragRectWidth * dragRectHeight;

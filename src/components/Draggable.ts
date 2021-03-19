@@ -5,6 +5,7 @@ interface Events {
   [key: string]: Function[]
 }
 
+// @TODO off, remove listeners ...
 class EventEmitter {
   private events: Events;
   constructor() {
