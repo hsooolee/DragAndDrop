@@ -19,8 +19,8 @@ class EventEmitter {
     (this.events[name]).push(callback);
   }
 
-  protected emit(name: string, ...args: any[]): void {
-    this.events[name].forEach((fn) => fn(...args));
+  protected emit<T>(name: string, obj: T): void {
+    this.events[name].forEach((fn) => fn(obj));
   }
 }
 
